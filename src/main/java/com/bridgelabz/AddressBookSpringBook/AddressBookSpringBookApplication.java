@@ -9,12 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AddressBookSpringBookApplication {
 
 	public static void main(String[] args) {
-		log.info("info : welcome to spring boot !!");
-		log.debug("debug : welcome to spring boot !!");
+		log.info("info : welcome to AddressBook spring boot !!");
+		log.debug("debug : welcome to AddressBook spring boot !!");
 		log.warn("warn: welcome to spring boot !!");
 		log.error("error : welcome to spring boot !!");
 		SpringApplication.run(AddressBookSpringBookApplication.class, args);
-		System.out.println("Welcome to AddressBook");
+		System.out.println("******* --  Welcome to AddressBook  -- *******");
 	}
 
 }

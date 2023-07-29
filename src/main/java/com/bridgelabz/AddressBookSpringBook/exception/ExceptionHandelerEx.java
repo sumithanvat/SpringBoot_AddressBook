@@ -25,4 +25,9 @@ public class ExceptionHandelerEx {
         ResponseDTO responseDTO = new ResponseDTO("Exception while performing api ",exception.getMessage());
         return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ResponseDTO> handleDuplicateEmailException(DuplicateEmailException exception) {
+        ResponseDTO responseDTO = new ResponseDTO("Exception while performing REST API", exception.getMessage());
+        return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+    }
 }

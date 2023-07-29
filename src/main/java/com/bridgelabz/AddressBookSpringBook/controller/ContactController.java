@@ -2,7 +2,7 @@ package com.bridgelabz.AddressBookSpringBook.controller;
 
 import com.bridgelabz.AddressBookSpringBook.dto.ContactDTO;
 import com.bridgelabz.AddressBookSpringBook.dto.ResponseDTO;
-import com.bridgelabz.AddressBookSpringBook.model.Contact;
+
 import com.bridgelabz.AddressBookSpringBook.service.ContactService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 public class ContactController {
-    @Autowired
-    private ContactService contactService;
+    @Autowired // This annotation automatically injects an instance of ContactService into this field.
+    private ContactService contactService; // Field to hold the reference to the ContactService bean.
 
+//----------------------------------------------------------------------------------------------------------------------
     // API endpoint to add a new contact.
-    @PostMapping("/addContact")
+    @PostMapping("/addcontact")
     public ResponseEntity<ResponseDTO> addContact(@Valid @RequestBody ContactDTO contactDTO) {
         // Log that the data is added successfully.
         log.info("Data added Successfully");
@@ -32,7 +33,7 @@ public class ContactController {
 
     //------------------------------------------------------------------------------------------------------------------
     // API endpoint to retrieve a contact by its unique identifier.
-    @GetMapping("/getContactById/{id}")
+    @GetMapping("/getcontactbyid/{id}")
     public ResponseEntity<ResponseDTO> getContactById(@PathVariable long id) {
         // Log a warning that data is being retrieved based on the provided ID.
         log.warn("Data is retrieving from id");
@@ -46,7 +47,7 @@ public class ContactController {
 
     //------------------------------------------------------------------------------------------------------------------
     // API endpoint to retrieve all contact data.
-    @GetMapping("/GetAllContact")
+    @GetMapping("/getallcontact")
     public ResponseEntity<ResponseDTO> getAllContact() {
         // Log a warning that all data is being retrieved.
         log.warn("Retrieving all data");
@@ -60,7 +61,7 @@ public class ContactController {
 
     //------------------------------------------------------------------------------------------------------------------
     // API endpoint to update a contact by its unique identifier.
-    @PutMapping("/updateContact/{id}")
+    @PutMapping("/updatecontact/{id}")
     public ResponseEntity updateContact(@PathVariable long id, @RequestBody ContactDTO contactDTO) {
         // Create a ResponseDTO with the success message and the data returned by the contactService.updateContact method.
         ResponseDTO responseDTO = new ResponseDTO("Contact Updated", contactService.updateContact(id, contactDTO));
@@ -71,7 +72,7 @@ public class ContactController {
 
     //------------------------------------------------------------------------------------------------------------------
     // API endpoint to delete an employee by its unique identifier.
-    @DeleteMapping("/DeleteById/{id}")
+    @DeleteMapping("/deletebyid/{id}")
     public ResponseEntity<ResponseDTO> deleteEmployee(@PathVariable long id) {
         // Attempt to delete the employee with the provided ID.
         boolean deleted = contactService.deleteContact(id);

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
-@Data
+
 public class ContactDTO {
     @Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message ="Name not valid")
     public String name;

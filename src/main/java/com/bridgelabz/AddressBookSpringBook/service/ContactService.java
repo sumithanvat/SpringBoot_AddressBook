@@ -2,6 +2,7 @@ package com.bridgelabz.AddressBookSpringBook.service;
 
 import com.bridgelabz.AddressBookSpringBook.dto.ContactDTO;
 import com.bridgelabz.AddressBookSpringBook.exception.CustomException;
+import com.bridgelabz.AddressBookSpringBook.exception.DuplicateEmailException;
 import com.bridgelabz.AddressBookSpringBook.model.Contact;
 import com.bridgelabz.AddressBookSpringBook.repository.ContactRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,23 @@ public class ContactService {
     @Autowired
     private ContactRepo contactRepo;
 
-    // Created Method and logic for Add contact
     public Contact addContact(ContactDTO contactDTO) {
+        // Check if the email already exists in the database
+        String email = contactDTO.email;
+        if (contactRepo.existsByEmail(email)) {
+            throw new DuplicateEmailException("Email '" + email + "' is already taken. Please use a different email.");
+        }
+
+        // Email is not present in the database, so create and save the new employee
         Contact contactData = new Contact(contactDTO);
         return contactRepo.save(contactData);
     }
+    //*************************************************************************************************************
     // Created method and logic for get contact from id
     public Contact getContactById(long id) {
         return contactRepo.findById(id).orElseThrow(() -> new CustomException("Message With Id:" + id + " Not Present"));
     }
+    //************************************************************************************************************
     // Used method find all from ContactRepo
     public List<Contact> findAll() {
         return contactRepo.findAll();
@@ -47,13 +56,14 @@ public class ContactService {
         // If the Contact data does not exist, return null.
         return null;
     }
+  //***********************************************************************************************************
     public boolean deleteContact(long id) {
         // Check if Contact is present
         if (contactRepo.existsById(id)) {
-            contactRepo.deleteById(id);
-            return true;
+            contactRepo.deleteById(id); // Delete the contact from the repository.
+            return true; // Indicate that the contact was successfully deleted.
         }
-        return false;
+        return false; // The contact with the given ID was not found, no deletion occurred.
     }
 
 }
