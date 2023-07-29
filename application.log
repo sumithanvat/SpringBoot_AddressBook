@@ -113,3 +113,10 @@ com.bridgelabz.AddressBookSpringBook.exception.DuplicateEmailException: Email 's
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.11.jar:10.1.11]
 	at java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]
 
+2023-07-30T02:05:20.179+05:30  INFO 8820 --- [restartedMain] c.b.A.AddressBookSpringBookApplication   : Starting AddressBookSpringBookApplication using Java 19.0.2 with PID 8820 (F:\AddressBookSpringBook\target\classes started by root in F:\AddressBookSpringBook)
+2023-07-30T02:05:20.185+05:30 DEBUG 8820 --- [restartedMain] c.b.A.AddressBookSpringBookApplication   : Running with Spring Boot v3.1.2, Spring v6.0.11
+2023-07-30T02:05:20.187+05:30  INFO 8820 --- [restartedMain] c.b.A.AddressBookSpringBookApplication   : No active profile set, falling back to 1 default profile: "default"
+2023-07-30T02:05:33.826+05:30  WARN 8820 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-07-30T02:05:34.840+05:30  INFO 8820 --- [restartedMain] c.b.A.AddressBookSpringBookApplication   : Started AddressBookSpringBookApplication in 16.022 seconds (process running for 17.484)
+2023-07-30T02:05:44.926+05:30  INFO 8820 --- [http-nio-8089-exec-1] c.b.A.controller.ContactController       : Data added Successfully
+2023-07-30T02:05:45.240+05:30  WARN 8820 --- [http-nio-8089-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.bridgelabz.AddressBookSpringBook.exception.DuplicateEmailException: Email 'skhanvat@gmail.com' is already taken. Please use a different email.]
