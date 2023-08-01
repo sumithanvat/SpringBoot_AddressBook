@@ -3,6 +3,7 @@ package com.bridgelabz.AddressBookSpringBook.controller;
 import com.bridgelabz.AddressBookSpringBook.dto.ContactDTO;
 import com.bridgelabz.AddressBookSpringBook.dto.ResponseDTO;
 
+import com.bridgelabz.AddressBookSpringBook.model.Contact;
 import com.bridgelabz.AddressBookSpringBook.service.ContactService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -91,5 +92,18 @@ public class ContactController {
             // Return the ResponseDTO with HttpStatus.NOT_FOUND (404 - Not Found) status code.
             return new ResponseEntity<>(responseDTO, HttpStatus.NOT_FOUND);
         }
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    @PostMapping("/addcontacttoken")
+    public ResponseEntity<ResponseDTO> addContactToken(@Valid@RequestBody ContactDTO contactDTO){
+        return new ResponseEntity<>(contactService.addContactToken(contactDTO),HttpStatus.CREATED);
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    @GetMapping("/getbytoken")
+    public ResponseDTO getContactById(@RequestHeader String token){
+        Contact contact=contactService.getContactById(token);
+        ResponseDTO responseDTO=new ResponseDTO("ContactData Found",contact);
+        return responseDTO;
+
     }
 }

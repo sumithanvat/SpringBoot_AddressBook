@@ -1,12 +1,16 @@
 package com.bridgelabz.AddressBookSpringBook.service;
 
 import com.bridgelabz.AddressBookSpringBook.dto.ContactDTO;
+import com.bridgelabz.AddressBookSpringBook.dto.ResponseDTO;
 import com.bridgelabz.AddressBookSpringBook.exception.CustomException;
 import com.bridgelabz.AddressBookSpringBook.exception.DuplicateEmailException;
 import com.bridgelabz.AddressBookSpringBook.model.Contact;
 import com.bridgelabz.AddressBookSpringBook.repository.ContactRepo;
+import com.bridgelabz.AddressBookSpringBook.util.JWTToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -14,6 +18,8 @@ import java.util.List;
 public class ContactService {
     @Autowired
     private ContactRepo contactRepo;
+    @Autowired
+    private JWTToken jwtToken;
 
     public Contact addContact(ContactDTO contactDTO) {
         // Check if the email already exists in the database
@@ -64,6 +70,20 @@ public class ContactService {
             return true; // Indicate that the contact was successfully deleted.
         }
         return false; // The contact with the given ID was not found, no deletion occurred.
+    }
+  //*************************************************************************************************************
+    public ResponseDTO addContactToken(ContactDTO contactDTO ){
+        Contact contact= new Contact(contactDTO);
+        contactRepo.save(contact);
+        String token = jwtToken.createToken(contact.getId());
+        return new ResponseDTO(token,contact);
+
+    }
+    //**********************************************************************************************************
+    public Contact getContactById(String token){
+        long id=jwtToken.decodeToken(token);
+        return contactRepo.findById(id)
+                .orElseThrow(()->new CustomException("Employee not found with id: "+id));
     }
 
 }
