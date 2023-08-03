@@ -6,6 +6,7 @@ import com.bridgelabz.AddressBookSpringBook.exception.CustomException;
 import com.bridgelabz.AddressBookSpringBook.exception.DuplicateEmailException;
 import com.bridgelabz.AddressBookSpringBook.model.Contact;
 import com.bridgelabz.AddressBookSpringBook.repository.ContactRepo;
+import com.bridgelabz.AddressBookSpringBook.util.EmailService;
 import com.bridgelabz.AddressBookSpringBook.util.JWTToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class ContactService {
     private ContactRepo contactRepo;
     @Autowired
     private JWTToken jwtToken;
+    @Autowired
+    private EmailService emailService;
 
     public Contact addContact(ContactDTO contactDTO) {
         // Check if the email already exists in the database
@@ -75,7 +78,10 @@ public class ContactService {
     public ResponseDTO addContactToken(ContactDTO contactDTO ){
         Contact contact= new Contact(contactDTO);
         contactRepo.save(contact);
+        //ContactService contactService;
         String token = jwtToken.createToken(contact.getId());
+        emailService.sendEmail(contactDTO.getEmail(),"Data added successfully ",
+                "Hy..."+contact.getName()+" \n\n we added data successfully \n\n"+contact);
         return new ResponseDTO(token,contact);
 
     }
@@ -84,6 +90,27 @@ public class ContactService {
         long id=jwtToken.decodeToken(token);
         return contactRepo.findById(id)
                 .orElseThrow(()->new CustomException("Employee not found with id: "+id));
+    }
+    //***************************************************************************************************************
+    public void deleteContactByToken(String token) {
+        long id = jwtToken.decodeToken(token);
+        Contact contact = contactRepo.findById(id)
+                .orElseThrow(() -> new CustomException("Contact not found with id: " + id));
+        contactRepo.delete(contact);
+    }
+    //*****************************************************************************************************************
+    public Contact updateContactByToken(String token, ContactDTO contactDTO) {
+        long id = jwtToken.decodeToken(token);
+        Contact contact = contactRepo.findById(id)
+                .orElseThrow(() -> new CustomException("Contact not found with c id: " + id));
+
+        // Update the contact properties based on the provided contactDTO
+        // For example, you can use setters to update the properties as needed.
+        contact.setName(contactDTO.getName());
+        contact.setEmail(contactDTO.getEmail());
+        // Add other propartiee you want to update
+        contactRepo.save(contact); // Save the updated contact
+        return contact;
     }
 
 }

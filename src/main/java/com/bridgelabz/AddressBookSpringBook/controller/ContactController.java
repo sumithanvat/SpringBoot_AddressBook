@@ -3,6 +3,7 @@ package com.bridgelabz.AddressBookSpringBook.controller;
 import com.bridgelabz.AddressBookSpringBook.dto.ContactDTO;
 import com.bridgelabz.AddressBookSpringBook.dto.ResponseDTO;
 
+import com.bridgelabz.AddressBookSpringBook.exception.CustomException;
 import com.bridgelabz.AddressBookSpringBook.model.Contact;
 import com.bridgelabz.AddressBookSpringBook.service.ContactService;
 import jakarta.validation.Valid;
@@ -96,6 +97,9 @@ public class ContactController {
     //------------------------------------------------------------------------------------------------------------------
     @PostMapping("/addcontacttoken")
     public ResponseEntity<ResponseDTO> addContactToken(@Valid@RequestBody ContactDTO contactDTO){
+        String token = String.valueOf(contactService.addContactToken(contactDTO));
+        ResponseDTO responseDTO=contactService.addContactToken(contactDTO);
+
         return new ResponseEntity<>(contactService.addContactToken(contactDTO),HttpStatus.CREATED);
     }
     //------------------------------------------------------------------------------------------------------------------
@@ -105,5 +109,28 @@ public class ContactController {
         ResponseDTO responseDTO=new ResponseDTO("ContactData Found",contact);
         return responseDTO;
 
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    @DeleteMapping("/deletecontactbytoken")
+    public ResponseEntity<ResponseDTO> deleteContactByToken(@RequestHeader String token) {
+        log.warn("Contact is deleting");
+        try {
+            contactService.deleteContactByToken(token);
+            return new ResponseEntity<>(new ResponseDTO("Contact deleted successfully", null), HttpStatus.OK);
+        } catch (CustomException ex) {
+            return new ResponseEntity<>(new ResponseDTO(ex.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+    //-------------------------------------------------------------------------------------------------------------------
+    @PutMapping("/updatecontactbytoken")
+    public ResponseEntity<ResponseDTO> updateContactByToken(@RequestHeader String token, @Valid @RequestBody ContactDTO contactDTO) {
+        log.warn("Contact is updating");
+        try {
+            Contact updatedContact = contactService.updateContactByToken(token, contactDTO);
+            return new ResponseEntity<>(new ResponseDTO("Contact updated successfully", updatedContact), HttpStatus.OK);
+
+        } catch (CustomException ex) {
+            return new ResponseEntity<>(new ResponseDTO(ex.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
     }
 }
